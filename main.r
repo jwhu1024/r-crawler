@@ -1,12 +1,17 @@
-#source("utils.r")
+source("utils.r")
+source("crawler.r")
 
-
-#ppt_site <- "https://www.ptt.cc/"
-#ppt_site_cat <- "bbs/car/"
-#ppt_site_page <- "index.html"
+get_type_home_href <- 1
+ppt_site <- "https://www.ptt.cc"
+ppt_site_cat <- "/bbs/car/"
+ppt_site_page <- "index.html"
 
 # get full address for ptt car
-#ppt_home <- sprintf("%s%s%s", ppt_site, ppt_site_cat, ppt_site_page)
+href_link <- get_page(paste(ppt_site, ppt_site_cat, ppt_site_page, sep = ""), 1)
 
-#source("crawler.r")
-#href_list <- get_href(ppt_home)
+# iterator the href_link list
+for (href in href_link[, 1]) {
+  ppt_url <- paste(ppt_site, href, sep = "")
+  print(ppt_url)
+  print(1)
+}

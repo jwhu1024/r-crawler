@@ -1,13 +1,27 @@
 # install.packages("rvest")
-#library(rvest)
+library(rvest)
 
-#get_href <- function (target) {
-#  target_html <- read_html(target)
-#  res_href_list <- target_html %>%
-#    html_nodes(".title a") %>%
-#    html_attr("href")# %>%
-    #as.list()
+get_page <- function (url, target_type) {
+  target_html <- read_html(url)
   
-  #return(res_href_list)
-#}
+  switch (target_type,
+          get_href(target_html),
+          get_main_content(target_html))
+}
 
+get_main_content <- function (html) {
+  
+  content <- html %>%
+   html_node("#main-content") %>%
+   html_text() %>%
+   as.data.frame()
+}
+
+get_href <- function (html) {
+  #this function used to get the href link
+  
+  ref <- html %>%
+    html_nodes(".title a") %>%
+    html_attr("href") %>%
+    as.data.frame()
+}
