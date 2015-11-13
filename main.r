@@ -1,7 +1,6 @@
 source("utils.r")
 source("crawler.r")
 
-get_type_home_href <- 1
 ppt_site <- "https://www.ptt.cc"
 ppt_site_cat <- "/bbs/car/"
 ppt_site_page <- "index.html"
