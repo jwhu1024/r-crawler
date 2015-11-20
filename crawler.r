@@ -6,8 +6,9 @@ get_page <- function (url, target_type) {
   target_html <- read_html(url, encoding="UTF-8")
 
   switch (target_type,
-          get_href(target_html),
-          get_main_content(target_html))
+          get_href(target_html),         # 1
+          get_main_content(target_html), # 2
+          get_next_link(target_html))    # 3
 }
 
 get_main_content <- function (html) {
@@ -30,3 +31,16 @@ get_href <- function (html) {
   
   return(ref)
 }
+
+get_next_link <- function (html) {
+  n_link <- html %>%
+    html_nodes(".wide:nth-child(2)") %>%
+    html_attr("href") %>%
+    as.character()
+  
+  return(n_link)
+}
+
+# test area
+# t <- get_page("https://www.ptt.cc/bbs/car/index1.html", 3)
+# print(t)

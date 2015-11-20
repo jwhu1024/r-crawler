@@ -21,3 +21,4 @@ str_to_file <- function (str, fn) {
 create_output_folder <- function(path) {
   dir.create(path, showWarnings = FALSE)
 }
+  
