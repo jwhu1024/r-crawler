@@ -1,4 +1,4 @@
-library("stringr")
+library(stringr)
 source("utils.r")
 source("crawler.r")
 
@@ -14,20 +14,36 @@ get_type_next_link <- 3
 
 subdir <- "data"
 
-# initial before running
+# initial before running 
 basedir <- str_c(getwd(), "/", subdir)
 create_output_folder(basedir)
 
 # set init value for index before crawling (R is one-based)
 idx_s <- 1
 
-repeat{
+# update flag indicates that when we should get page again
+update = TRUE
+
+# times we should get in current page
+ref_len <- 0
+
+# record how many thread we have crawled
+total_th <- 0
+
+repeat {
   
-  # get full address for ptt car
-  href_link <- get_page(ppt_car_home, get_type_href)
+  if (update == TRUE) {
+    # get full address for ptt car
+    home_html <- get_page(ppt_car_home)
+  }
+  
+  href_link <- start_crawler(home_html, get_type_href);
   
   # get the list length
-  ref_len <- length(href_link[,1])
+  if (update == TRUE) {
+    ref_len <- length(href_link[,1])
+    update <- FALSE
+  }
   
   href <- href_link[idx_s, 1]
   idx_s <- idx_s + 1
@@ -35,7 +51,8 @@ repeat{
   ppt_url <- str_c(ppt_site, href)
   
   # fetch main content
-  mc <- get_page(ppt_url, get_type_m_content)
+  thr_html <- get_page(ppt_url)
+  mc <- start_crawler(thr_html, get_type_m_content);
   
   # path concatenation
   full_path <- str_c(basedir,
@@ -46,8 +63,9 @@ repeat{
   str_to_file(mc, full_path)
   
   # next page not exist) {
-  if (idx_s == ref_len) {
-    next_link <- get_page(ppt_car_home, get_type_next_link)
+  if (idx_s - 1 == ref_len) {
+    # tmp_html <- get_page(ppt_car_home)
+    next_link <- start_crawler(home_html, get_type_next_link);
     
     # maybe this page is the last
     if (is.na(next_link)) {
@@ -56,11 +74,18 @@ repeat{
     }
     
     # update the next page address
-    ppt_car_home <- paste(ppt_site, next_link, sep = "")
+    ppt_car_home <- str_c(ppt_site, next_link)
+    
+    # total
+    total_th <- total_th + ref_len
+    print(str_c("Until now we crawled ", total_th))
     
     # reset this index for the next page
     idx_s <- 1
+    
+    update <- TRUE
   }
+  # Sys.sleep(0.5)
 }
 
 print("done")

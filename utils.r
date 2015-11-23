@@ -14,8 +14,13 @@ list2ascii <- function (x, file=paste(deparse(substitute(x)), ".txt", sep="")) {
   return(invisible(NULL))       # return (nothing) from function
 }
 
+substrRight <- function(x, n) {
+  substr(x, nchar(x)-n+1, nchar(x))
+}
+
 str_to_file <- function (str, fn) {
   write(str, file = fn, append = FALSE, sep = "")
+  print(substrRight(str_c("content output to ", fn), 18));
 }
 
 create_output_folder <- function(path) {
