@@ -20,7 +20,7 @@ substrRight <- function(x, n) {
 
 str_to_file <- function (str, fn) {
   write(str, file = fn, append = FALSE, sep = "")
-  print(substrRight(str_c("content output to ", fn), 18));
+  print(substrRight(str_c("content output to ", fn), 18))
 }
 
 create_output_folder <- function(path) {

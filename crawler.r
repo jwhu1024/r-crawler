@@ -16,40 +16,29 @@ get_page <- function (url) {
 get_main_content <- function (html) {
   # this function used to get the main content
   content <- html %>%
-   html_node("#main-content") %>%
-   html_text() %>%
-   as.character()
-  
-  return(content)
+    html_node("#main-content") %>%
+    html_text() %>%
+    as.character()
 }
 
 get_href <- function (html) {
   # this function used to get the href link
-  
   ref <- html %>%
     html_nodes(".title a") %>%
     html_attr("href") %>%
     as.data.frame()
-  
-  return(ref)
 }
 
 get_next_link <- function (html) {
+
   n_link <- html %>%
     html_nodes(".wide:nth-child(2)") %>%
     html_attr("href") %>%
     as.character()
-  
-  return(n_link)
 }
 
 # test area
-# tmp <- "https://www.ptt.cc/bbs/car/M.1447335261.A.02B.html"
-# html <- get_page(tmp)
-# mc <- get_main_content(html)
-# source("utils.r")
-# str_to_file(mc, "/home/lester/R/project/r-crawler/data/M.1447335261.A.02B.html")
-# kdj <- "13312312"
-
-# t <- get_page("https://www.ptt.cc/bbs/car/index1.html", 3)
-# print(t)
+#thr_html <- get_page("https://www.ptt.cc/bbs/car/M.1440568637.A.DDC.html")
+#mc <- start_crawler(thr_html, 2);
+#source("utils.r")
+#str_to_file(mc, "./Mttt.html.abc")
