@@ -74,6 +74,8 @@ repeat {
       idx_s <- 1
       update <- TRUE
       
+      cleanMem()
+      
       # We'll get 503 error if we hit that site too quickly
       Sys.sleep(3)
     }
